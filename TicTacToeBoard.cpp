@@ -19,7 +19,17 @@ TicTacToeBoard::TicTacToeBoard()
 **/
 Piece TicTacToeBoard::toggleTurn()
 {
-  return Invalid;
+  if (turn == X)
+  {
+    turn = O;
+  }
+  
+  else
+  {
+    turn = X;
+  }
+  
+  return turn;
 }
 
 /**
@@ -33,7 +43,24 @@ Piece TicTacToeBoard::toggleTurn()
 **/ 
 Piece TicTacToeBoard::placePiece(int row, int column)
 {
-  return Invalid;
+  //Check bounds
+  if (row < 0 || column < 0 || row > BOARDSIZE - 1 || column >  BOARDSIZE - 1) {
+     return Invalid; 
+  }
+  
+  //Check already existing piece
+  if (board[row][column] != ' ') {
+    return board[row][column];
+  }
+  
+  // Space must be open, set the value
+  board[row][column] = turn;
+  
+  //Toggle turns
+  toggleTurn();
+  
+  //Return placed piece
+  return getPiece(row, column);
 }
 
 /**
@@ -42,7 +69,12 @@ Piece TicTacToeBoard::placePiece(int row, int column)
 **/
 Piece TicTacToeBoard::getPiece(int row, int column)
 {
-  return Invalid;
+  //Check bounds
+  if (row < 0 || column < 0 || row > BOARDSIZE - 1 || column > BOARDSIZE - 1) {
+     return Invalid; 
+  }
+  
+  return board[row][column];
 }
 
 /**
@@ -51,5 +83,68 @@ Piece TicTacToeBoard::getPiece(int row, int column)
 **/
 Piece TicTacToeBoard::getWinner()
 {
-  return Invalid;
+  
+  
+  bool over = true;
+  Piece winner = Invalid;
+  
+  //Game might not be over if there is a blank
+  for(int i=0; i<BOARDSIZE; i++)
+  {
+    for(int j=0; j<BOARDSIZE; j++)
+    {
+      if (board[i][j] == Blank)
+      {
+        over = false;
+      }
+    }
+  }
+  
+  //Check vertical rows
+  for(int i=0; i < BOARDSIZE; i++)
+  {
+    if (board[i][0] == board[i][1] && board[i][0] == board[i][2])
+    {
+      winner = board[i][0];
+    }
+  }
+  
+  //Check horizontal rows
+  for(int i=0; i < BOARDSIZE; i++)
+  {
+    if (board[0][i] == board[1][i] && board[0][i] == board[2][i])
+    {
+      winner = board[0][i];
+    }
+  }
+  
+  //Check diagonals
+  if (board[0][0] == board[1][1] && board[0][0] == board[2][2])
+  {
+    winner = board[0][0];
+  }
+  
+  if (board[2][0] == board[1][1] && board[2][2] == board[0][2])
+  {
+    winner = board[0][0];
+  }
+  
+  
+  // Make sure matching pieces are not filler pieces
+  if (winner == X || winner == O)
+  {
+    return winner;
+  }
+  
+  //Then the game might not be over
+  if (!over)
+  {
+    return Invalid;
+  }
+  
+  else 
+  {
+    return Blank;
+  }
+  
 }

@@ -83,8 +83,6 @@ Piece TicTacToeBoard::getPiece(int row, int column)
 **/
 Piece TicTacToeBoard::getWinner()
 {
-  
-  
   bool over = true;
   Piece winner = Invalid;
   
@@ -126,7 +124,7 @@ Piece TicTacToeBoard::getWinner()
   
   if (board[2][0] == board[1][1] && board[2][2] == board[0][2])
   {
-    winner = board[0][0];
+    winner = board[2][0];
   }
   
   
